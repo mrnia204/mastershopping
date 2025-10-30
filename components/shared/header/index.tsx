@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Menu from './menu';
 
 import { APP_NAME } from '@/lib/constants';
 
@@ -21,6 +22,8 @@ const Header = () => {
             </span>
           </Link>
         </div>
+
+        <Menu />
       </div>
     </header>
   );
