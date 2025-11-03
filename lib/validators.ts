@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { formatNumberWithDecimal } from './utils';
 
 const currency = z
-  .string()
+  .number()
   .refine(
     (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))), 
     'Price must have exactely 2 demical places'
@@ -20,4 +20,5 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+  numReviews: z.number().default(0),
 });

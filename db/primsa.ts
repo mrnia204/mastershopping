@@ -21,8 +21,8 @@ export const prisma = globalForPrisma.prisma ||
   new PrismaClient({ adapter}).$extends({
     result: {
       product: {
-        price: { compute: (p) => p.price?.toString()},
-        rating: { compute: (p) => p.rating?.toString()},
+        price: { compute: (p) => Number(p.price)},
+        rating: { compute: (p) => Number(p.rating)},
       },
     },
   });
