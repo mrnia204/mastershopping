@@ -1,33 +1,36 @@
-'user client'
 import { prisma } from "@/db/primsa";
-//import { PrismaClient } from "@prisma/client";
-import { convertToPlainObject } from "../utils";
 import { LATEST_PRODUCTS_LIMIT } from "../constants";
+import { convertToPlainObject } from "../utils";
 
-// Get latest products
+// 1. GET/ the latest products
 export async function getLatestProducts() {
-  //const prisma = new PrismaClient();
-
   const data = await prisma.product.findMany({
-    take: LATEST_PRODUCTS_LIMIT, 
-    orderBy: { createdAt: "desc"},
+    take: LATEST_PRODUCTS_LIMIT,
+    orderBy: {createdAt: "desc" },
   });
 
-  return convertToPlainObject(data);
-}
+  // convert decimal to number
+  const converteDecimal = data.map((p) => ({
+    ...p,
+    price: Number(p.price),
+    rating: Number(p.rating),
+  }));
+
+  return convertToPlainObject(converteDecimal);
+};
 
 
-// Get single Product by its slug
+// GET/ product by slug
 export async function getProductBySlug(slug: string) {
   const product = await prisma.product.findFirst({
-    where: {slug},
+    where: { slug }
   });
 
   if (!product) return null;
 
-  return {
+  return convertToPlainObject({
     ...product,
-    price: product.price.toString(),
-    rating: product.rating.toString(),
-  }
-}
+    price: Number(product.price),
+    rating: Number(product.rating),
+  });
+};
