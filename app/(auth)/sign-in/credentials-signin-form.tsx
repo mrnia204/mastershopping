@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 import { signInDefaultValus } from "@/lib/constants";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
@@ -16,6 +17,9 @@ const CredentailsSignInForm = () => {
     success: false, 
     message: ""
   }); 
+
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   const SignInButton = () => {
     const { pending} = useFormStatus();
@@ -28,7 +32,8 @@ const CredentailsSignInForm = () => {
   }
 
   return (
-    <form>
+    <form action={action}>
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
       <div className="space-y-6">
         <div>
           <Label htmlFor="email" className="pb-2">Email</Label>
