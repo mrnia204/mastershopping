@@ -21,7 +21,7 @@ const ProductDetailsPage = async (props: { params: Promise <{slug:string}>}) => 
     <>
     <section>
       <Link href='/'>
-        <Button variant='outline' className='text-xs rounded-br-none'>Back to Home</Button>
+        <Button variant='ghost' className='text-xs rounded-br-none mb-2'>Back to Home</Button>
       </Link>
       <div className="grid grid-cols-1 md:grid-cols-5">
         {/** images colums */}
