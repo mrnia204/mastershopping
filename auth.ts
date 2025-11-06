@@ -7,7 +7,7 @@ import { NextAuthConfig } from 'next-auth';
 
 export const config = {
   pages: {
-    signIn: 'sign-in',
+    signIn: '/sign-in',
     error: '/sign-in', // Error code passed in query string as ?error
   },
   session: {
