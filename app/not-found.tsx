@@ -18,7 +18,7 @@ const NotFoundPage = () => {
         <p className="text-destructive">Could not find requested page</p>
         <Button 
           variant="outline" 
-          className="mt-2 md:mt-4 md:ml-2" 
+          className="mt-2 md:mt-4 md:ml-2 cursor-pointer" 
           onClick={() => (window.location.href='/')}
         >
           Back to Home
