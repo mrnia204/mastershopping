@@ -1,9 +1,13 @@
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './db/primsa';
-import CredenttialsProvider from 'next-auth/providers/credentials';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import { NextAuthConfig } from 'next-auth';
+
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+
 
 export const config = {
   pages: {
@@ -15,7 +19,7 @@ export const config = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   }, 
   adapter: PrismaAdapter(prisma),
-  providers: [CredenttialsProvider({
+  providers: [CredentialsProvider({
     credentials: {
       email: { type: 'email' },
       password: { type: 'password' }
@@ -31,7 +35,7 @@ export const config = {
       });
 
       // check if user exists and if the password matches
-      if (user && user.password) {
+      if (user && user.password && credentials.password) {
         const isMatch = compareSync(credentials.password as string, user.password);
 
         // if password is correct, return user
@@ -56,8 +60,6 @@ export const config = {
       session.user.id = token.sub;
       session.user.role = token.role;
       session.user.name = token.name;
-
-      console.log(token)
 
       // If there is an update, set the user name
       if (trigger === 'update') {
@@ -85,6 +87,33 @@ export const config = {
       }
 
       return token;
+    },
+
+
+    // 
+    authorized({ request, auth}: any) {
+      // Check for session cart cookie on protected routes
+      if (!request.cookies.get('sessionCartId')) {
+        // Generate new session cart id cookie
+        const sessionCartId = crypto.randomUUID(); 
+
+        // Clone the req, headers
+        const newRequestHeaders = new Headers(request.headers);
+
+        // Create new response and add to the new headers
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders,
+          }
+        });
+
+        // Set newly generated sessionCartId in the response cookies
+        response.cookies.set('sessionCartId', sessionCartId);
+
+        return response;
+      } else {
+        return true;
+      }
     }
   }
 } satisfies NextAuthConfig;

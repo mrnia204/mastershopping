@@ -17,7 +17,11 @@ const ModeToggle = () => {
   const {theme, setTheme } = useTheme();
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+
+    return () => clearTimeout(timer)
   }, []);
 
   if (!mounted) {
@@ -27,7 +31,7 @@ const ModeToggle = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className="focus-visible:ring-0 focus-visible:ring-offset-0">
+        <Button variant='ghost' className="focus-visible:ring-0 focus-visible:ring-offset-0 cursor-pointer">
           { theme === 'system' ? (
             <SunMoon />
           ) : theme === 'dark' ? (
@@ -37,7 +41,7 @@ const ModeToggle = () => {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="flex-col justify-start items-start px-4">
         <DropdownMenuLabel>Appearance</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem 

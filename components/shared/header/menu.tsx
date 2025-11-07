@@ -19,20 +19,25 @@ const Menu = () => {
         <UserButton />
       </nav>
 
-      <nav className="md:hidden">
+      {/* Mobile Menu */}
+      <nav className="md:hidden flex justify-end">
         <Sheet>
           <SheetTrigger className="align-middle">
             <EllipsisVertical />
           </SheetTrigger>
-          <SheetContent className="flex flex-col items-start">
+          <SheetContent className="flex flex-col items-start p-4 ouverflow-auto max-h-[80vh]">
             <SheetTitle>Menu</SheetTitle>
-            <ModeToggle />
-            <Button asChild variant="ghost">
+            <div className="w-full flex justify-end">
+              <ModeToggle />
+            </div>
+            <Button asChild variant="ghost" className="w-full flex justify-end">
               <Link href='/cart'>
                 <ShoppingCart /> Cart
               </Link>
             </Button>
-            <UserButton />
+            <div className="w-full flex justify-end mt-4">
+              <UserButton />
+            </div>
             <SheetDescription />
           </SheetContent>
         </Sheet>

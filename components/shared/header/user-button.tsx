@@ -3,7 +3,7 @@ import { auth } from '@/auth';
 import { signOutUser } from '@/lib/actions/user.actions';
 import { Button } from '@/components/ui/button';
 import { UserIcon } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 
 
 const UserButton = async () => {
@@ -26,31 +26,35 @@ const UserButton = async () => {
     <div className="flex gap-2 items-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="flex items-center">
+          <div className="flex">
             <Button 
               variant='ghost' 
-              className='relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-orange-500'
+              className='relative w-8 h-8 rounded-full ml-2 flex  justify-center bg-orange-500'
             >
               {firstInitial}
             </Button>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
-          <DropdownMenuContent className='w-56' align='end' forceMount sideOffset={5}>
+          <DropdownMenuContent 
+            className='flex-col justify-start items-start px-4' 
+            align='end' 
+            forceMount 
+            sideOffset={5}
+            style={{ zIndex: 9999 }}
+          >
             <DropdownMenuLabel className='font-normal'>
-              <div className="flex flex-col space-y-1 mb-1">
-                <div className="text-sm font-medium leading-none px-2">
-                  {session.user?.name}
-                </div>
-                <div className="text-sm text-muted-foreground leading-none px-2">
-                  {session.user?.email}
-                </div>
-              </div>
+              {session.user?.name}
             </DropdownMenuLabel>
-            <DropdownMenuItem className='p-0 mb-1' onClick={signOutUser}>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel className='text-sm text-gray-500 mb-2'>
+              {session.user?.email}
+            </DropdownMenuLabel>
+            
+            <DropdownMenuItem onClick={signOutUser}>
               <Button
-                variant='ghost'
-                className='w-full py-4 px-2 h-4 justify-start'
+                variant='outline'
+                className='w-full'
               >
                 Sign Out
               </Button>

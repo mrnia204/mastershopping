@@ -1,9 +1,7 @@
 import { z } from 'zod';
 import { formatNumberWithDecimal } from './utils';
 
-const currency = z
-  .number()
-  .refine(
+const currency = z.coerce.number().refine(
     (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))), 
     'Price must have exactely 2 demical places'
   );
@@ -41,3 +39,26 @@ export const signUpFormSchema = z.object({
   message: "Passwords don't match",
   path: ['confirmPassword'],
 });
+
+
+// Cart schemas
+export const cartItemSchema = z.object({
+  productId: z.string().min(1, 'Product ID is required'),
+  name: z.string().min(1, 'Name is required'),
+  slug: z.string().min(1, 'Slug is required'),
+  qty: z.int().int().nonnegative('Quantatiy must be a postive integer'),
+  image: z.string().min(1, 'Image is required'),
+  price: currency,
+})
+
+
+export const insertCartSchema = z.object({
+  items: z.array(cartItemSchema),
+  itemPrice: currency,
+  totalPrice: currency,
+  shippingPrice: currency,
+  taxPrice: currency,
+  sessionCartId: z.string().min(1, 'Session Cart ID is required'),
+  userId: z.string().optional().nullable(),
+});
+
