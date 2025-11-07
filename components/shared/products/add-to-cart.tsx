@@ -1,39 +1,90 @@
 'use client';
-import { CartItem } from "@/types";
+import { useTransition } from "react";
+import { CartItem, Cart } from "@/types";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus, } from "lucide-react";
+import { Plus, Minus, Loader } from "lucide-react";
 import { toast } from 'sonner';
-import { addItemToCart } from "@/lib/actions/cart.actions";
+import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 
 
 
-const AddToCart = ({ item }: { item: CartItem}) => {
+
+
+const AddToCart = ({ item, cart }: { item: CartItem, cart?: Cart}) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  const addToCardHandler = async() => {
-    const res = await addItemToCart(item);
 
-    if (!res.success){
-      toast.error(res.message);
+  // ADD TO CART HANDLER
+  const addToCartHandler = async() => {
+    startTransition( async () => {
+      const res = await addItemToCart(item);
 
-      return;
-    }
-    // Handle success add to cart
-    toast.success(res.message, {
-      action: {
-        label: "Go to Cart", // built in soonner action button
-        onClick: () => router.push('/cart'),
+      if (!res.success){
+        toast.error(res.message);
+
+        return;
       }
+      // Handle success add to cart
+      toast.success(res.message, {
+        action: {
+          label: "Go to Cart", // built in soonner action button
+          onClick: () => router.push('/cart'),
+        }
+      });
     });
-
   }
+
+  // Handle remove from cart
+  const removeCartHandler = async () => {
+    startTransition(async () => {
+      const res = await removeItemFromCart(item.productId);  
+        toast.success(res.message || 'Item remvoed form cart', {
+          action: {
+            label: "Undo",
+            onClick: async () => {
+              await addItemToCart(item);
+              toast.info("Item restored to cart")
+            },
+          },
+        });
+      
+        return;
+    });
+  }
+
+  // Check if item is in cart
+  const existItem = cart && cart.items.find((x) => x.productId === item.productId);
   
-  return (
-    <Button type="button" className="w-full cursor-pointer" onClick={addToCardHandler}>
-      <Plus /> Add To Cart
+  return existItem ? (
+    <div>
+      <Button type="button" variant='outline' onClick={removeCartHandler}>
+        { isPending ? (
+          <Loader className="w-4 h-4 animate-spin" />
+        ) : (
+          <Minus className="h-4 w-4"/>
+        )}
+      </Button>
+      <span className="px-2">{existItem.qty}</span>
+      <Button type="button" variant='default' onClick={addToCartHandler}>
+        { isPending ? (
+          <Loader className="w-4 h-4 animate-spin" />
+        ) : (
+          <Plus className="h-4 w-4"/>
+        )}
+      </Button>
+    </div>
+  ): (
+    <Button type="button" className="w-full cursor-pointer" onClick={addToCartHandler}>
+      { isPending ? (
+          <Loader className="w-4 h-4 animate-spin" />
+        ) : (
+          <Plus className="h-4 w-4"/>
+        )} { ' '}
+        Add to Cart
     </Button>
-  );
+  )
 }
  
 export default AddToCart;
