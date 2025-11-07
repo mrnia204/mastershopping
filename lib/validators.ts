@@ -1,9 +1,7 @@
 import { z } from 'zod';
 import { formatNumberWithDecimal } from './utils';
 
-const currency = z
-  .number()
-  .refine(
+const currency = z.coerce.number().refine(
     (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))), 
     'Price must have exactely 2 demical places'
   );
@@ -56,7 +54,7 @@ export const cartItemSchema = z.object({
 
 export const insertCartSchema = z.object({
   items: z.array(cartItemSchema),
-  itemsPrice: currency,
+  itemPrice: currency,
   totalPrice: currency,
   shippingPrice: currency,
   taxPrice: currency,

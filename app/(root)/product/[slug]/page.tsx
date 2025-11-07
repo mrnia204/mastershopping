@@ -6,7 +6,7 @@ import ProductPrice from "@/components/shared/products/product-price";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
 import ProductImages from "@/components/shared/products/product-images";
-import AddToCart from '@/components/shared/products/product-cart';
+import AddToCart from '@/components/shared/products/add-to-cart';
 import { Button } from '@/components/ui/button';
 
 
