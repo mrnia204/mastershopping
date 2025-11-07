@@ -9,7 +9,7 @@ const Homepage = async() => {
     <div className="wrapper">
       <ProductList 
         data={latestProducts} 
-        title="Newst Arravials" 
+        title="Newset Arravials" 
       />
     </div>
   );
