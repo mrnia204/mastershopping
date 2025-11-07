@@ -7,7 +7,7 @@ import { NextAuthConfig } from 'next-auth';
 
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import Head from 'next/head';
+
 
 export const config = {
   pages: {
