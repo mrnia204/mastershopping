@@ -1,3 +1,5 @@
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import "@/assets/styles/globals.css";
@@ -30,6 +32,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
           >
             {children}
             <Toaster richColors/>
+            <SpeedInsights />
           </ThemeProvider>
       </body>
     </html>
