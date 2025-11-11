@@ -59,3 +59,21 @@ export function round2( value: number | string ) {
     throw new Error ("value is not number or string");
   }
 }
+
+// CURRECNY FORMATTER
+const CURRECNY_FORMATTER = new Intl.NumberFormat('en-US', {
+  currency: 'PGK',
+  style: 'currency',
+  minimumFractionDigits: 2,
+});
+
+// format currency using the fomatter about
+export function formatCurrency( amount: number | string | null) {
+  if (typeof amount === 'number') {
+    return CURRECNY_FORMATTER.format(amount);
+  } else if ( typeof amount === 'string') {
+    return CURRECNY_FORMATTER.format(Number(amount));
+  } else {
+    return 'NaN';
+  }
+};
