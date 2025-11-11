@@ -10,7 +10,7 @@ type Props = {
 }
 
 
-const ProductList = ({ data, title,limit }: Props) => {
+const ProductList = ({ data, title, limit }: Props) => {
   const limitedData = limit ? data.slice(0, limit) : data;
   return (
     <div className="my-10">
