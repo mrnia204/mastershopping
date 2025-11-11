@@ -104,7 +104,7 @@ export async function updateUserAddress(data: ShippingAddress) {
 
     return {
       success: true,
-      message: "User updated successfully"
+      message: "User updated successfully!"
     }
   } catch (error) {
     return { success: false, message: formatError(error)}
