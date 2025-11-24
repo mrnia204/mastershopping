@@ -44,7 +44,7 @@ const ProductDetailsPage = async (props: { params: Promise <{slug:string}>}) => 
               />
             </div>
             <div className="mt-10">
-              <p className="font-semibold">Description</p>
+              <p className="font-semibold">Descriptions</p>
               <p>{product.description}</p>
             </div>
           </div>
